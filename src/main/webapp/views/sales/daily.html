@@ -1,0 +1,61 @@
+<div class="salesWrap">
+	<canvas id="myChart" style="width: 100%; height: 40vh"></canvas>
+	<p class="semiTitle">일별 매출내역</p>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th scope="col" rowspan="2">일자</th>
+				<th scope="col" colspan="2">결제완료 주문</th>
+				<th scope="col" rowspan="2">결제합계</th>
+				<th scope="col" rowspan="2">환불합계</th>
+				<th scope="col" rowspan="2">순매출</th>
+			</tr>
+			<tr>
+				<th scope="col">주문수</th>
+				<th scope="col">매칭권수량</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="daily : ${data}">
+				<td th:text="${daily.dailyRangeStr}"></td>
+				<td th:text="${daily.orderCnt}"></td>
+				<td th:text="${daily.quantity}"></td>
+				<td th:text="${#numbers.formatDecimal(daily.totalAmount,0,'COMMA',-1,'POINT')}"></td>
+				<td th:text="${#numbers.formatDecimal(daily.refundStatus,0,'COMMA',-1,'POINT')}"></td>
+				<td th:text="${#numbers.formatDecimal(daily.totalAmount - daily.refundStatus,0,'COMMA',-1,'POINT')}">
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<script th:inline="javascript">
+		var sales = /*[[${data}]]*/[]
+		sales.reverse();
+		var ctx = document.getElementById('myChart');
+		var myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: sales.map((data) => data.dailyRangeStr),
+				datasets: [{
+					label: '순매출',
+					data: sales.map((data) => (data.totalAmount - data.refundStatus)),
+					backgroundColor: sales.map(() => 'rgba(54, 162, 235, 0.2)')
+					,
+					borderColor: sales.map(() => 'rgba(54, 162, 235, 1)'),
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: false,
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
+				}
+			}
+		});
+
+	</script>
+</div>

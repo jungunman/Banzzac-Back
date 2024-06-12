@@ -1,0 +1,14 @@
+<div th:fragment="paging(currentPage, prevBlock, nextBlock, minPage, maxPage, isNextBtn)">
+    
+    <!-- 이전 페이지 버튼 -->
+    <a th:href="@{(${prevBlock})}" th:if="${currentPage le maxPage and currentPage gt 10}">이전</a>
+    <!-- 페이지 번호 버튼 -->
+    <span th:each="pageNumber : ${#numbers.sequence(minPage, maxPage)}">
+        <a th:href="@{${pageNumber}}" th:text="${pageNumber}" 
+           th:class="${pageNumber == currentPage} ? 'active' : ''"></a>
+    </span>
+    
+    <!-- 다음 페이지 버튼 -->
+    <a th:href="@{(${nextBlock})}" th:if="${isNextBtn}">다음</a>
+
+</div>

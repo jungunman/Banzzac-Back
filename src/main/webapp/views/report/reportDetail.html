@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>신고상세보기</title>
+</head>
+<body>
+<h1>신고상세보기</h1>
+<form th:action="@{'/management/reportDetail/modify/' + ${report.reportNo}}" method="post">
+<table border="">
+	<tbody>
+		<tr>
+			<td>접수 번호</td>
+			<td>신고한 유저 아이디</td>
+			<td>신고받은 유저 아이디</td>
+			<td>신고 사유</td>
+			<td>신고 시간</td>
+			<td>신고 처리 상태</td>
+			<td>관리자 답변</td>
+			<td>답변</td>
+			<td>신고 받은 유저 정지</td>
+		</tr>
+		<tr >
+			<td th:text="${report.reportNo}"></td>
+			<td th:text="${report.memberId}"></td>
+			<td th:text="${report.reportedId}"></td>
+			<td th:text="${report.reportReason}"></td>
+			<td th:text="${report.getReportTimeStr}"></td>
+			<td>
+			    <span th:if="${report.reportStatus == 0}">미확인</span>
+			    <span th:if="${report.reportStatus == 1}">처리중</span>
+			    <span th:if="${report.reportStatus == 2}">처리완료</span>
+			</td>
+			<td><input type="text" name="reportAdminAnswer" th:value="${report.reportAdminAnswer}" /></td>
+			<td><input type="submit" value="답변달기"/></td>
+			<td><a th:href="@{'suspend/' + ${report.reportedId} + '/' + ${report.reportNo}}">정지</a></td>
+		</tr>
+	 </tbdoy>
+</table>
+</form>
+
+</body>
+</html>

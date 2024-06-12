@@ -1,0 +1,185 @@
+<!-- 오늘 일정 -->
+<div class="today-work" >
+	<h5>⭕ TO DO LIST</h5>
+	<div class="work__row">
+		<a th:href="@{/dashboard}" class="work__col">신규 회원 미검수 (<span th:text="${event.todayRegister}"></span>)</a>
+		<a th:href="@{/dashboard}" class="work__col">신고 (<span th:text="${event.reportCount}"></span>)</a>
+		<a th:href="@{/dashboard}" class="work__col">환불 요청 (<span th:text="${event.todayWithdrawnMember}"></span>)</a>
+		<a th:href="@{/dashboard}" class="work__col">탈퇴한 회원 (<span th:text="${event.refundCount}"></span>)</a>
+	</div>
+</div>
+
+<!-- 그래프 -->
+<canvas id="salesChart" width="100%" height="30px"></canvas>
+<!-- 매출 표 -->
+<table class="table table-bordered" style="margin-top:20px;">
+  <thead>
+    <tr>
+      <th scope="col" class="text-center td25">일자</th>
+      <th scope="col" class="text-center td25">매출액</th>
+      <th scope="col" class="text-center td25">부가세</th>
+      <th scope="col" class="text-center td25">순수익</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="summary : ${sales}">
+      <th scope="row" th:text="${summary.dailyRangeStr}" class="text-right"></th>
+      <td th:text="${#numbers.formatDecimal(summary.totalAmount, 0, 'COMMA', -1, 'POINT')}" class="text-right"></td>
+      <td th:text="${#numbers.formatDecimal(summary.totalAmount*0.11, 0, 'COMMA', -1, 'POINT')} " class="text-right"></td>
+      <td class="text-right"><span th:text="${#numbers.formatDecimal(summary.totalAmount - (summary.totalAmount*0.11) , 0, 'COMMA', -1, 'POINT')}"></span> 원</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="dash-box">
+	<div class="dash-col">
+		<div class="dash-box__title">
+			<h6>❣ 오늘 가입한 회원</h6>
+			<a th:href="@{/dashboard}">더보기></a>
+		</div>
+		<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      <th scope="col" class="text-center">아이디</th>
+		      <th scope="col" class="text-center">닉네임</th>
+		      <th scope="col" class="text-center">강아지 이름</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	<tr th:if="${register.size() == 0}">
+		  		<td colspan="3" align="center">신규 가입자가 없습니다.</td>
+		  	</tr>
+		    <tr th:each=" reg:${register}">
+		      <td align="center" th:text="${reg.memberId}"></td>
+		      <td align="center" th:text="${reg.nickname}"></td>
+		      <td align="center" th:text="${reg.dogName}"></td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+	<div class="dash-col">
+		<div class="dash-box__title">
+			<h6>💢 미처리 신고</h6>
+			<a th:href="@{/dashboard}">더보기></a>
+		</div>
+		<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      <th scope="col" class="text-center">신고 번호</th>
+		      <th scope="col" class="text-center">신고자</th>
+		      <th scope="col" class="text-center">신고 대상</th>
+		      <th scope="col" class="text-center">신고 사유</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	<tr th:if="${report.size() == 0}">
+		  		<td colspan="4" align="center">신고한 사람이 없습니다.</td>
+		  	</tr>
+		    <tr th:each=" data:${report}">
+		      <td align="center" th:text="${data.reportNo}"></td>
+		      <td align="center"  th:text="${data.memberId}"></td>
+		      <td align="center" th:text="${data.reportedId}"></td>
+		      <td align="center" th:text="${data.reason}"></td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+</div>
+
+
+<div class="dash-box">
+	<div class="dash-col">
+		<div class="dash-box__title">
+			<h6>💥 오늘의 환불 신청</h6>
+			<a th:href="@{/dashboard}">더보기></a>
+		</div>
+		<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      <th scope="col" class="text-center">결제 번호</th>
+		      <th scope="col" class="text-center">아이디</th>
+		      <th scope="col" class="text-center">환불 금액</th>
+		      <th scope="col" class="text-center">환불 사유</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr th:if="${refund.size() == 0}">
+		  		<td colspan="4" align="center">환불한 신청한 회원이 없습니다.</td>
+		  	</tr>
+		    <tr th:each=" data:${refund}">
+		      <td align="center" th:text="${data.partnerOrderId}"></td>
+		      <td align="center" th:text="${data.memberId}"></td>
+		      <td align="center" th:text="${data.totalAmount}"></td>
+		      <td align="center" th:text="${data.reason}"></td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+	<div class="dash-col">
+		<div class="dash-box__title">
+			<h6>❤ 회원 결제 순위</h6>
+			<a th:href="@{/dashboard}">더보기></a>
+		</div>
+		<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      <th scope="col" class="text-center">등수</th>
+		      <th scope="col" class="text-center">아이디</th>
+		      <th scope="col" class="text-center">닉네임</th>
+		      <th scope="col" class="text-center">결제 금액</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr th:if="${rank.size() == 0}">
+		  		<td colspan="4" align="center">일주일간 결제한 사람이 없습니다.</td>
+		  	</tr>
+		    <tr th:each=" data, dataStat:${rank}">
+		      <td align="center" th:text="${dataStat.count}"></td>
+		      <td align="center" th:text="${data.memberId}"></td>
+		      <td align="center" th:text="${data.nickname}"></td>
+		      <td align="center" th:text="${data.totalAmount}"></td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+</div>
+
+
+
+<!-- 
+<div th:replace="~{inc/paging(${pageDTO.currentPage}, ${pageDTO.prevBlock}, ${pageDTO.nextBlock}, ${pageDTO.minPage}, ${pageDTO.maxPage}, ${pageDTO.isNextBtn} )}"></div> -->
+<script th:inline="javascript">
+const ctx = document.getElementById('salesChart').getContext('2d');
+const sales = /*[[ ${sales} ]]*/[]	
+sales.reverse();
+
+const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: sales.map(item => item.dailyRangeStr),
+        datasets: [{
+            label: '총매출',
+            data: sales.map(item => item.totalAmount),
+            backgroundColor: [
+                'rgba(164,99,255, 0.5)'
+            ],
+            borderColor: [
+                'rgb(164,99,255)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value, index, values) {
+                        return value + ' 원'; // 각 눈금 레이블에 '원'을 추가하여 표시
+                    }
+                }
+            }
+        }
+    }
+});
+</script>

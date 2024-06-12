@@ -1,0 +1,58 @@
+<div class="salesWrap">
+	<div class="payRank">
+		<div class="rankWrap" th:each="ranking:${userRanking}">
+			<div th:text="${ranking.ranking + '등'}" class="ranking"></div>
+			<div th:text="${ranking.userId}" class="rankingId"></div>
+			<div th:text="${#numbers.formatDecimal(ranking.totalAmount,0,'COMMA',-1,'POINT')+ '원'}"></div>
+		</div>
+	</div>
+	<input type="month" onchange="selectMonth(this.value)" name="selectMonth" id="month" class="inputDate">
+	<p class="salesTitle">💸결제회원리스트</p>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th scope="col" rowspan="2"></th>
+				<th scope="col" rowspan="2">회원 ID</th>
+				<th scope="col" colspan="3">결제완료 주문</th>
+				<th scope="col" rowspan="2">결제일</th>
+			</tr>
+			<tr>
+				<th scope="col">주문번호</th>
+				<th scope="col">구매 수량</th>
+				<th scope="col">구매 금액</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="payment:${paymentList}">
+				<td th:text="${paymentStat.count}"></td>
+				<td th:text="${payment.userId}"></td>
+				<td th:text="${payment.orderId}"></td>
+				<td th:text="${payment.quantity}"></td>
+				<td th:text="${#numbers.formatDecimal(payment.totalAmount,0,'COMMA',-1,'POINT')}"></td>
+				<td th:text="${payment.payDateStr}"></td>
+			</tr>
+		</tbody>
+	</table>
+	<script>
+
+		function selectMonth(selectValue) {
+			var get = selectValue.split("-")
+			var year = get[0];
+			var month = get[1];
+			location.href = "?year=" + year + "&month=" + month
+		}
+		window.onload = () => {
+			const url = new URLSearchParams(window.location.search);
+			if (url.get('year') == null || url.get('month') == null) {
+				var date = new Date();
+				var year = date.getFullYear();
+				var month = (date.getMonth() + 1).toString().padStart(2, '0');
+				document.getElementById("month").value = year + "-" + month
+			} else {
+				document.getElementById("month").value = url.get('year') + "-" + url.get('month')
+			}
+
+		}
+
+	</script>
+</div>

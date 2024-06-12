@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기간별 검색</title>
+
+
+</head>
+<body>
+
+	<form action="/management/periodMemberReg" method="GET">
+		<label for="start">시작일:</label>
+		 <input type="date" id="start" name="startDate"> 
+		<label for="end">종료일:</label> 
+		<input type="date" id="end" name="endDate">
+		 <input type="submit" value="검색">
+	</form>
+<table border="">
+	<tbody>
+		<tr>
+			<td>번호</td>
+			<td>아이디</td>
+			<td>닉네임</td>
+			<td>전화번호</td>
+			<td>성별</td>
+			<td>나이</td>
+			<td>가입일</td>
+		</tr>
+		<tr th:each="member : ${member}">
+			<td th:text="${member.no}"></td>
+			<td th:text="${member.id}"></td>
+			<td th:text="${member.nickname}"></td>
+			<td th:text="${member.phone}"></td>
+			<td>
+				<span th:if="${member.gender == 1}">남자</span>
+			    <span th:if="${member.gender == 2}">여자</span>
+			</td>
+			<td th:text="${member.age}"></td>
+			<td th:text="${member.getDateStr}"></td>
+			
+			
+		</tr>
+	 </tbdoy>
+</table>
+
+
+
+</body>
+</html>

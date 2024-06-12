@@ -1,0 +1,29 @@
+<h1>신고된 유저 리스트</h1>
+<table border="">
+	<tbody>
+		<tr>
+			<td>접수 번호</td>
+			<td>신고한 유저 아이디</td>
+			<td>신고받은 유저 아이디</td>
+			<td>신고 사유</td>
+			<td>신고 시간</td>
+			<td>신고 처리 상태</td>
+			<td>관리자 답변</td>
+			<td>상세보기</td>
+		</tr>
+		<tr th:each="report : ${mainData}">
+			<td th:text="${report.reportNo}"></td>
+			<td th:text="${report.memberId}"></td>
+			<td th:text="${report.reportedId}"></td>
+			<td th:text="${report.reportReason}"></td>
+			<td th:text="${report.getReportTimeStr}"></td>
+			<td>
+			    <span th:if="${report.reportStatus == 0}">미확인</span>
+			    <span th:if="${report.reportStatus == 1}">처리중</span>
+			    <span th:if="${report.reportStatus == 2}">처리완료</span>
+			</td>
+			<td th:text="${report.reportAdminAnswer}"></td>
+			<td><a th:href="@{'reportDetail/' + ${report.reportNo}}">상세보기</a></td>
+		</tr>
+	 </tbdoy>
+</table>

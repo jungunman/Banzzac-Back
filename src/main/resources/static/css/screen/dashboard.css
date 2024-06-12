@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+.text-center{
+	text-align: center;
+}
+
+.border-right{
+	border-right: 1px solid #000;
+}
+
+.text-right{
+	text-align: right;
+}
+.today-work{
+	margin-top : 20px;
+	border : 1px solid #000;
+	padding : 5px 10px;
+}
+
+.work__row{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.work__row > a{
+	color : #000;
+	font-weight: 600;
+	text-decoration: none;
+}
+.work__row > a:hover{
+	color: rgb(164,99,255) !important;
+}
+
+.dash-box{
+	display: flex;
+}
+
+.dash-box__title{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;	
+}
+
+.dash-box__title > a{
+	color: #000;
+	text-decoration: none;
+}
+
+.dash-box > .dash-col{
+	width: 50%;
+}
+.dash-box > .dash-col:nth-child(2){
+	margin-left: 10px;
+}
+.td25{
+	width: 25%;
+}
+
+.dash-col >.table > tbody> tr> td {
+	max-width: 80px;
+    white-space: nowrap; /* 줄 바꿈 방지 */
+    overflow: hidden; /* 내용이 넘치는 경우 가려짐 */
+    text-overflow: ellipsis; /* 넘치는 내용에 대한 생략 부호 (...) */
+}

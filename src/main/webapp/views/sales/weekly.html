@@ -1,0 +1,81 @@
+<div class="salesWrap">
+	<canvas id="myChart" style="width: 100%; height: 40vh"></canvas>
+	<input type="month" onchange="selectMonth(this.value)" name="selectMonth" id="month" min="2023-01"
+		class="inputDate">
+	<p class="semiTitle">주간 매출내역</p>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th scope="col" rowspan="2">주차</th>
+				<th scope="col" colspan="2">결제완료 주문</th>
+				<th scope="col" rowspan="2">결제합계</th>
+				<th scope="col" rowspan="2">환불합계</th>
+				<th scope="col" rowspan="2">순매출</th>
+			</tr>
+			<tr>
+				<th scope="col">주문수</th>
+				<th scope="col">매칭권수량</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="weekly : ${data}">
+				<td th:text="${weeklyStat.count}"></td>
+				<td th:text="${weekly.orderCnt}"></td>
+				<td th:text="${weekly.quantity}"></td>
+				<td th:text="${#numbers.formatDecimal(weekly.totalAmount,0,'COMMA',-1,'POINT')}"></td>
+				<td th:text="${#numbers.formatDecimal(weekly.refundStatus,0,'COMMA',-1,'POINT')}"></td>
+				<td th:text="${#numbers.formatDecimal(weekly.totalAmount-weekly.refundStatus,0,'COMMA',-1,'POINT')}">
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+
+	function selectMonth(selectValue) {
+		var get = selectValue.split("-")
+		var year = get[0];
+		var month = get[1];
+		location.href = "?year=" + year + "&month=" + month
+	}
+	window.onload = () => {
+		const url = new URLSearchParams(window.location.search);
+		if (url.get('year') == null || url.get('month') == null) {
+			var date = new Date();
+			var year = date.getFullYear();
+			var month = (date.getMonth() + 1).toString().padStart(2, '0');
+			document.getElementById("month").value = year + "-" + month
+		} else {
+			document.getElementById("month").value = url.get('year') + "-" + url.get('month')
+		}
+	}
+</script>
+<script th:inline="javascript">
+	var sales = /*[[${data}]]*/[]
+	var ctx = document.getElementById('myChart');
+	var myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: sales.map((data) => data.ranking + '주'),
+			datasets: [{
+				label: '순매출',
+				data: sales.map((data) => (data.totalAmount - data.refundStatus)),
+				backgroundColor: sales.map(() => 'rgba(54, 162, 235, 0.2)')
+				,
+				borderColor: sales.map(() => 'rgba(54, 162, 235, 1)'),
+				borderWidth: 1
+			}]
+		},
+		options: {
+			responsive: false,
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true
+					}
+				}]
+			}
+		}
+	});
+
+</script>

@@ -1,0 +1,48 @@
+<h1>검수 대기 리스트</h1>
+<table border="">
+	<tbody>
+		<tr>
+			<td>회원 번호</td>
+			<td>회원 아이디</td>
+			<td>회원 닉네임</td>
+			<td>전화번호</td>
+			<td>성별</td>
+			<td>나이</td>
+			<td>산책 온도</td>
+			<td>상태</td>
+			<td>이용권 구매</td>
+			<td>가입일</td>
+			<td>상태</td>
+			<td>기간별조회</td>
+			
+		
+		</tr>
+		<tr th:each="member : ${newMembers}">
+			<td th:text="${member.no}"></td>
+			<td th:text="${member.id}"></td>
+			<td th:text="${member.nickname}"></td>
+			<td th:text="${member.phone}"></td>
+			<td>
+				<span th:if="${member.gender == 1}">남자</span>
+			    <span th:if="${member.gender == 2}">여자</span>
+			</td>
+			<td th:text="${member.age}"></td>
+			<td th:text="${member.Temperature}"></td>
+			<td>
+			    <span th:if="${member.isGrant == 0}">탈퇴</span>
+			    <span th:if="${member.isGrant == 1}">정지</span>
+			    <span th:if="${member.isGrant == 2}">검수대기</span>
+			    <span th:if="${member.isGrant == 3}">회원</span>
+			</td>
+			<td th:text="${member.quantity}"></td>
+			<td th:text="${member.getDateStr}"></td>
+			<td><a th:href="@{'approval/' + ${member.id}}">승인/ </a></td>
+			<td><a th:href="@{'refuse/' + ${member.id}}">거부 </a></td>
+			
+		
+			
+		</tr>
+	 </tbdoy>
+</table>
+<td><a th:href="@{'periodMember'}">신규회원기간별조회</a></td>
+

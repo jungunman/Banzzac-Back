@@ -1,0 +1,81 @@
+@charset "UTF-8";
+@import "./reset.css";
+@import "./inc/aside.css";
+@import "./screen/sales.css";
+@import "./screen/dashboard.css";
+*{
+	box-sizing : content-box;
+	margin : 0;
+	padding :0;
+}
+
+html,body{
+	height: 100vh;
+}
+
+main{
+	display : flex;
+	align-items: flex-start;
+	height: 100%;
+}
+main > aside{
+	width: 15%;
+	height : 100%;
+	background-color: #000;
+	color:#fff ;
+	overflow: hidden;
+	position: relative;
+}
+
+#aside-scroll::-webkit-scrollbar {
+    display: none; /* WebKit(Chrome, Safari 등) 브라우저의 스크롤바를 숨김 */
+}
+
+
+
+
+.logoBox > img{
+	object-fit : cover;
+	width:100%;
+	height :250px;
+	border:none;
+}
+main > .container{
+	width:85%;
+	height: 100%;
+	margin-left: 8%;
+	margin-right: 0;
+	overflow: auto;
+}
+
+.salesTitle{
+	font-weight: bold;
+	font-size: x-large;
+}
+
+
+.btn-toggle-nav a{
+    padding: .1875rem .5rem;
+    margin-top: .125rem;
+    margin-left: 1.75rem;
+}
+
+button.nav-link , a.nav-link{
+	gap:5px;
+}
+
+#sales-collapse > ul > li > a:hover , #member-collapse> ul > li > a:hover, #sales-collapse > ul > li > button:hover {
+	color: rgb(38,198,218) !important;
+}
+
+#sub-sales-collapse > ul > li > a:hover , #sub-payment-collapse > ul > li > a:hover, #sub-reund-collapse > ul > li > a:hover{
+	color: rgb(225, 255, 148) !important;
+}
+
+#sales-collapse > ul > li > button{
+	margin-left:7px;
+}
+
+ul#dashboard-title > li > a:hover , #dashboard-title > li > button:hover{
+	color: rgb(164,99,255) !important;
+}

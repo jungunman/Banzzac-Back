@@ -1,0 +1,72 @@
+<div class="salesWrap">
+	<canvas id="myChart" style="width: 100%; height: 40vh"></canvas>
+	<select name="selectedYear" id="year" onchange="select()" class="selectYear">
+		<option th:each="selectYear : ${year}" th:value="${selectYear.year}" th:text="${selectYear.year}"
+			th:selected="${selectYear.year} == ${selectedYear}">
+		</option>
+	</select>
+	<p class="semiTitle">월별 매출내역</p>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th scope="col" rowspan="2">월</th>
+				<th scope="col" colspan="2">결제완료 주문</th>
+				<th scope="col" rowspan="2">결제합계</th>
+				<th scope="col" rowspan="2">환불합계</th>
+				<th scope="col" rowspan="2">순매출</th>
+			</tr>
+			<tr>
+				<th scope="col">주문수(개)</th>
+				<th scope="col">매칭권수량(개)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="monthly:${data}">
+				<th th:text="${monthly.month}"></th>
+				<td th:text="${monthly.orderCnt}"></td>
+				<td th:text="${monthly.quantity}"></td>
+				<td th:text="${#numbers.formatDecimal(monthly.totalAmount,0,'COMMA',-1,'POINT')}"></td>
+				<td th:text="${#numbers.formatDecimal(monthly.refundStatus,0,'COMMA',-1,'POINT')}"></td>
+				<td
+					th:text="${#numbers.formatDecimal(monthly.totalAmount - monthly.refundStatus,0,'COMMA',-1,'POINT')}">
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+	function select() {
+		const year = document.querySelector("#year");
+		var option = year.options[year.selectedIndex];
+		location.href = "?year=" + option.value
+	}	
+</script>
+<script th:inline="javascript">
+	var sales = /*[[${data}]]*/[]
+	sales.reverse();
+	var ctx = document.getElementById('myChart');
+	var myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: sales.map((data) => data.month + '월'),
+			datasets: [{
+				label: '순매출',
+				data: sales.map((data) => (data.totalAmount - data.refundStatus)),
+				backgroundColor: sales.map(() => 'rgba(54, 162, 235, 0.2)')
+				,
+				borderColor: sales.map(() => 'rgba(54, 162, 235, 1)'),
+				borderWidth: 1
+			}]
+		},
+		options: {
+			responsive: false,
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true
+					}
+				}]
+			}
+		}
+	});
+</script>

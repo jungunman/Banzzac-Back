@@ -1,0 +1,2 @@
+0000000000000000000000000000000000000000 c1891768aa6c88e18fc2c351eb3fc1ac7ce13772 Ryu_woong <jin02014@naver.com> 1712770567 +0900	branch: Created from feat/search
+c1891768aa6c88e18fc2c351eb3fc1ac7ce13772 63caa82b2f080d81711bf85604c3238459ffb4e0 Ryu_woong <jin02014@naver.com> 1712770617 +0900	commit: feat/매칭 조건에 해당하는 멤버 정보 sql 작성 완료, Controller 작업 진행중
